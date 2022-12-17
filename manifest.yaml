@@ -181,22 +181,23 @@ spec:
           limits:
             cpu: 300m
             memory: 300Mi
-        livenessProbe:
-          command:
-            - ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-          initialDelaySeconds: 5
-          timeoutSeconds: 5
-          successThreshold: 1
-          failureThreshold: 3
-          periodSeconds: 10
-        readinessProbe:
-          command:
-            - ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-          initialDelaySeconds: 10
-          timeoutSeconds: 5
-          successThreshold: 1
-          failureThreshold: 3
-          periodSeconds: 10
+        # livenessProbe:
+        #   command:
+        #   command:
+        #     - ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+        #   initialDelaySeconds: 5
+        #   timeoutSeconds: 5
+        #   successThreshold: 1
+        #   failureThreshold: 3
+        #   periodSeconds: 10
+        # readinessProbe:
+        #   command:
+        #     - ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+        #   initialDelaySeconds: 10
+        #   timeoutSeconds: 5
+        #   successThreshold: 1
+        #   failureThreshold: 3
+        #   periodSeconds: 10
         env:
         - name: MYSQL_DATABASE
           valueFrom:
