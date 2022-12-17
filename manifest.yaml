@@ -1,0 +1,250 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name:  crypto-app
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: crypto-cm
+  namespace: crypto-app
+data:
+  MYSQLDB_HOST: "mysqldb"
+  MYSQLDB_USER: "root" 
+  MYSQLDB_ROOT_PASSWORD: "123456"
+  MYSQLDB_DATABASE: "cotacao_crypto"
+  MYSQLDB_DOCKER_PORT: "3306"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  cotacao-crypto-api
+  namespace: crypto-app
+  labels:
+    app:  cotacao-crypto-api
+spec:
+  selector:
+    matchLabels:
+      app: cotacao-crypto-api
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  cotacao-crypto-api
+    spec:
+      containers:
+      - name:  cotacao-crypto-api
+        image:  alexdamiao86/cotacao-crypto-api:1.1.0
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 300m
+            memory: 300Mi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5555
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5555
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        env:
+        - name: MYSQLDB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: crypto-cm
+              key: MYSQLDB_HOST
+        - name: MYSQLDB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: crypto-cm
+              key: MYSQLDB_USER
+        - name: MYSQLDB_ROOT_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: crypto-cm
+              key: MYSQLDB_ROOT_PASSWORD
+        - name: MYSQLDB_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: crypto-cm
+              key: MYSQLDB_DATABASE
+        - name: MYSQLDB_DOCKER_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: crypto-cm
+              key: MYSQLDB_DOCKER_PORT
+        ports:
+        - containerPort:  5555
+          name:  cotacao-crypto-api
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cotacao-crypto-api
+  namespace: crypto-app
+spec:
+  selector:
+    app: cotacao-crypto-api
+  type: NodePort
+  # sessionAffinity: None
+  # sessionAffinityConfig:
+  #   clientIP:
+  #     timeoutSeconds: 10800
+  ports:
+  - name: cotacao-crypto-api
+    protocol: TCP
+    port: 5555
+    targetPort: 5555 
+    # If you set the `spec.type` field to `NodePort` and you want a specific port number,
+    # you can specify a value in the `spec.ports[*].nodePort` field.
+    nodePort: 32500
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv
+  namespace: crypto-app
+  labels:
+    app: mysql-pv
+spec:
+  storageClassName: ""
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+  namespace: crypto-app
+  labels:
+    app: mysql-pvc
+spec:
+  storageClassName: ""
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  mysqldb
+  namespace: crypto-app
+  labels:
+    app:  mysqldb
+spec:
+  selector:
+    matchLabels:
+      app: mysqldb
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app:  mysqldb
+    spec:
+      # initContainers:
+        # Init containers are exactly like regular containers, except:
+          # - Init containers always run to completion.
+          # - Each init container must complete successfully before the next one starts.
+      containers:
+      - name:  mysqldb
+        image:  mysql:8.0.30
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 300m
+            memory: 300Mi
+        livenessProbe:
+          command:
+            - "mysqladmin"
+            - "ping"
+            - "-h"
+            - "localhost"
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        readinessProbe:
+          command:
+            - "mysqladmin"
+            - "ping"
+            - "-h"
+            - "localhost"
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        env:
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: crypto-cm
+              key: MYSQLDB_DATABASE
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: crypto-cm
+              key: MYSQLDB_ROOT_PASSWORD
+        ports:
+        - containerPort:  3306
+          name:  mysqldb
+        volumeMounts:
+        - name: db
+          mountPath: /var/lib/mysql
+      volumes:
+        - name: db
+          persistentVolumeClaim: 
+            claimName: mysql-pvc
+      restartPolicy: OnFailure
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysqldb
+  namespace: crypto-app
+spec:
+  selector:
+    app: mysqldb
+  type: ClusterIP
+  # sessionAffinity: None
+  # sessionAffinityConfig:
+  #   clientIP:
+  #     timeoutSeconds: 10800
+  ports:
+  - name: mysqldb
+    # protocol: TCP
+    port: 3306
+    targetPort: 3306 
+    # If you set the `spec.type` field to `NodePort` and you want a specific port number,
+    # you can specify a value in the `spec.ports[*].nodePort` field.
+    # nodePort: 
+
