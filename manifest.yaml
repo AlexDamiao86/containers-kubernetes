@@ -219,7 +219,7 @@ spec:
         - name: db
           persistentVolumeClaim: 
             claimName: mysql-pvc
-      restartPolicy: OnFailure
+      restartPolicy: Always
 ---
 apiVersion: v1
 kind: Service
