@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name:  carteira-crypto-api
-        image:  alexdamiao86/carteira-crypto-api:1.0.0
+        image:  alexdamiao86/carteira-crypto-api:1.0.1
         resources:
           requests:
             cpu: 100m
@@ -48,15 +48,8 @@ spec:
           successThreshold: 1
           failureThreshold: 3
           periodSeconds: 10
-        # env:
-        # - name: MYSQLDB_HOST
-        #   valueFrom:
-        #     configMapKeyRef:
-        #       name: crypto-cm
-        #       key: MYSQLDB_HOST
         ports:
         - containerPort:  8080
-          # name:  carteira-crypto-api
       restartPolicy: Always
 ---
 apiVersion: v1
