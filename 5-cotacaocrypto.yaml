@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  cotacao-crypto-api
+  namespace: crypto-app
+  labels:
+    app:  cotacao-crypto-api
+spec:
+  selector:
+    matchLabels:
+      app: cotacao-crypto-api
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  cotacao-crypto-api
+    spec:
+      containers:
+      - name:  cotacao-crypto-api
+        image:  alexdamiao86/cotacao-crypto-api:1.1.0
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 300m
+            memory: 300Mi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5555
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5555
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        env:
+        - name: MYSQLDB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: crypto-cm
+              key: MYSQLDB_HOST
+        - name: MYSQLDB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: crypto-cm
+              key: MYSQLDB_USER
+        - name: MYSQLDB_ROOT_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: crypto-cm
+              key: MYSQLDB_ROOT_PASSWORD
+        - name: MYSQLDB_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: crypto-cm
+              key: MYSQLDB_DATABASE
+        - name: MYSQLDB_DOCKER_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: crypto-cm
+              key: MYSQLDB_DOCKER_PORT
+        ports:
+        - containerPort:  5555
+          # name:  cotacao-crypto-api
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cotacao-crypto-api
+  namespace: crypto-app
+spec:
+  selector:
+    app: cotacao-crypto-api
+  type: NodePort
+  # sessionAffinity: None
+  # sessionAffinityConfig:
+  #   clientIP:
+  #     timeoutSeconds: 10800
+  ports:
+  - name: cotacao-crypto-api
+    protocol: TCP
+    port: 5555
+    targetPort: 5555 
+    # If you set the `spec.type` field to `NodePort` and you want a specific port number,
+    # you can specify a value in the `spec.ports[*].nodePort` field.
+    nodePort: 32555

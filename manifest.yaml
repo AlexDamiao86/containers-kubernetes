@@ -116,7 +116,7 @@ spec:
     targetPort: 5555 
     # If you set the `spec.type` field to `NodePort` and you want a specific port number,
     # you can specify a value in the `spec.ports[*].nodePort` field.
-    nodePort: 32500
+    nodePort: 32555
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

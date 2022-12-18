@@ -1,0 +1,11 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: crypto-cm
+  namespace: crypto-app
+data:
+  MYSQLDB_HOST: "mysqldb"
+  MYSQLDB_USER: "root" 
+  MYSQLDB_ROOT_PASSWORD: "123456"
+  MYSQLDB_DATABASE: "cotacao_crypto"
+  MYSQLDB_DOCKER_PORT: "3306"
