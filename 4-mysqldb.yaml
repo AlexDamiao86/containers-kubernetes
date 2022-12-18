@@ -62,7 +62,7 @@ metadata:
 spec:
   selector:
     app: mysqldb
-  ClusterIP: None
+  clusterIP: None
   # type: ClusterIP
   # sessionAffinity: None
   # sessionAffinityConfig:
