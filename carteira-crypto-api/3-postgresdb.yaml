@@ -48,7 +48,7 @@ spec:
               name: carteira-crypto-cm
               key: POSTGRES_DB       
         ports:
-        - containerPort:  5432
+        - containerPort: 5432
         volumeMounts:
         - name: postgres-persistent-storage
           mountPath: /var/lib/postgresql/data
@@ -122,7 +122,7 @@ spec:
   clusterIP: None
   ports:
   - name: postgres
-    port: 15432
+    port: 5432
     targetPort: 5432 
 ---
 apiVersion: v1
