@@ -1,17 +1,21 @@
 apiVersion: v1
-kind: PersistentVolumeClaim
+kind: PersistentVolume
 metadata:
   name: mysql-pv
-  namespace: crypto-app
-  labels:
-    app: mysql-pv
 spec:
-  storageClassName: ""
+  capacity:
+    storage: 2Gi
+  volumeMode: Filesystem
   accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: slow
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+  nfs:
+    path: /data
+    server: 172.17.0.2
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -21,7 +25,7 @@ metadata:
   labels:
     app: mysql-pvc
 spec:
-  storageClassName: ""
+  storageClassName: slow
   accessModes:
   - ReadWriteOnce
   resources:
