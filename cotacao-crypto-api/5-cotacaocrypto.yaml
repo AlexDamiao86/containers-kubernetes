@@ -88,15 +88,9 @@ spec:
   selector:
     app: cotacao-crypto-api
   type: NodePort
-  # sessionAffinity: None
-  # sessionAffinityConfig:
-  #   clientIP:
-  #     timeoutSeconds: 10800
   ports:
   - name: cotacao-crypto-api
     protocol: TCP
     port: 5555
     targetPort: 5555 
-    # If you set the `spec.type` field to `NodePort` and you want a specific port number,
-    # you can specify a value in the `spec.ports[*].nodePort` field.
     nodePort: 32555

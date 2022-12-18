@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  carteira-crypto-api
+  namespace: crypto-app
+  labels:
+    app:  carteira-crypto-api
+spec:
+  selector:
+    matchLabels:
+      app: carteira-crypto-api
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  carteira-crypto-api
+    spec:
+      containers:
+      - name:  carteira-crypto-api
+        image:  alexdamiao86/carteira-crypto-api:1.0.0
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 300m
+            memory: 300Mi
+        livenessProbe:
+          httpGet:
+            path: /q/health/live
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /q/health/ready
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        # env:
+        # - name: MYSQLDB_HOST
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: crypto-cm
+        #       key: MYSQLDB_HOST
+        ports:
+        - containerPort:  8080
+          # name:  carteira-crypto-api
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: carteira-crypto-api
+  namespace: crypto-app
+spec:
+  selector:
+    app: carteira-crypto-api
+  type: NodePort
+  ports:
+  - name: carteira-crypto-api
+    protocol: TCP
+    port: 8080
+    targetPort: 8080 
+    nodePort: 32888
