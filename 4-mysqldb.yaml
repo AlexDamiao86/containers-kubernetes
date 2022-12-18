@@ -26,28 +26,11 @@ spec:
         image:  mysql:8.0.30
         resources:
           requests:
-            cpu: 100m
-            memory: 100Mi
+            cpu: 200m
+            memory: 200Mi
           limits:
-            cpu: 300m
-            memory: 300Mi
-        # livenessProbe:
-        #   command:
-        #   command:
-        #     - ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-        #   initialDelaySeconds: 5
-        #   timeoutSeconds: 5
-        #   successThreshold: 1
-        #   failureThreshold: 3
-        #   periodSeconds: 10
-        # readinessProbe:
-        #   command:
-        #     - ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-        #   initialDelaySeconds: 10
-        #   timeoutSeconds: 5
-        #   successThreshold: 1
-        #   failureThreshold: 3
-        #   periodSeconds: 10
+            cpu: 500m
+            memory: 500Mi
         env:
         - name: MYSQL_DATABASE
           valueFrom:
@@ -63,13 +46,13 @@ spec:
         - containerPort:  3306
           # name:  mysqldb
         volumeMounts:
-        - name: db
+        - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
       volumes:
-        - name: db
+        - name: mysql-persistent-storage
           persistentVolumeClaim: 
             claimName: mysql-pvc
-      restartPolicy: Always
+      # restartPolicy: Always
 ---
 apiVersion: v1
 kind: Service
@@ -79,7 +62,8 @@ metadata:
 spec:
   selector:
     app: mysqldb
-  type: ClusterIP
+  ClusterIP: None
+  # type: ClusterIP
   # sessionAffinity: None
   # sessionAffinityConfig:
   #   clientIP:
