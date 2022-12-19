@@ -112,7 +112,7 @@ metadata:
 spec:
   selector:
     app: postgres
-  clusterIP: none
+  clusterIP: None
   ports:
   - protocol: TCP
     port: 5432
