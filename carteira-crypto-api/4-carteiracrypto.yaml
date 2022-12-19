@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name:  carteira-crypto-api
-        image:  alexdamiao86/carteira-crypto-api:1.0.4
+        image:  alexdamiao86/carteira-crypto-api:1.0.5
         resources:
           requests:
             cpu: 300m

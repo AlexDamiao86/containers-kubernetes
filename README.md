@@ -12,7 +12,7 @@ Executar em cluster Kubernetes microserviços em alta disponibilidade.
 
 2. [Carteira-crypto-api](https://github.com/FabioQuimico/carteira-crypto-quarkus) - Microserviço desenvolvido em Quarkus com persistência Postgres. Relaciona as criptomoedas dos clientes. Disponibiliza API Rest para realizar operações CRUD clientes e de operações de compra e venda de criptomoedas. É possível interagir com a aplicação através de Swagger pelo endereço "{ip-maquina}:32080/q/swagger-ui/". 
 
-> **_NOTA:_** Imagem DockerHub: alexdamiao86/carteira-crypto-api:1.0.2
+> **_NOTA:_** Imagem DockerHub: alexdamiao86/carteira-crypto-api:1.0.5
 
 ## ⚙️ Executando
 
