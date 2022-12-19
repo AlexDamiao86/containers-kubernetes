@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name:  carteira-crypto-api
-        image:  alexdamiao86/carteira-crypto-api:1.0.1
+        image:  alexdamiao86/carteira-crypto-api:1.0.2
         resources:
           requests:
             cpu: 500m
@@ -48,6 +48,42 @@ spec:
           successThreshold: 1
           failureThreshold: 3
           periodSeconds: 10
+        env: 
+        - name: POSTGRES_USER
+          valueFrom:
+            configMapKeyRef:
+              name: carteira-crypto-cm
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: carteira-crypto-cm
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: carteira-crypto-cm
+              key: POSTGRES_HOST
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: carteira-crypto-cm
+              key: POSTGRES_DB
+        - name: POSTGRES_DOCKER_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: carteira-crypto-cm
+              key: POSTGRES_DOCKER_PORT
+        - name: COTACAO_CRYPTO_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: carteira-crypto-cm
+              key: COTACAO_CRYPTO_HOST
+        - name: COTACAO_CRYPTO_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: carteira-crypto-cm
+              key: COTACAO_CRYPTO_PORT
         ports:
         - containerPort:  8080
       restartPolicy: Always

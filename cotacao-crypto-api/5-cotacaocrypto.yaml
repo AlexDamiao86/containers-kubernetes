@@ -76,7 +76,6 @@ spec:
               key: MYSQLDB_DOCKER_PORT
         ports:
         - containerPort:  5555
-          # name:  cotacao-crypto-api
       restartPolicy: Always
 ---
 apiVersion: v1
