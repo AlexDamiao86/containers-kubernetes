@@ -2,7 +2,7 @@
 
 ## 🎯 Objetivo
 
-Executar em cluster Kubernetes microserviços em alta disponibilidade. 
+Executar em cluster Kubernetes microserviços e frontend em alta disponibilidade. 
 
 ## Microserviços / Frontend
 
@@ -18,11 +18,13 @@ Executar em cluster Kubernetes microserviços em alta disponibilidade.
 
 > **_NOTA:_** Imagem DockerHub: gabrielobarbosa/crypto:v2
 
-## Topologia
+## 📐 Topologia
 
+![Topologia](images/topologiav1.png)
 
+## ⚙️ Configuração declarativa (Como executar)
 
-## ⚙️ Executando
+> **_NOTA_**: Configuração declarativa .yaml se encontra nas pastas cotação-crypto-api e carteira-crypto-api deste projeto. Código fonte das aplicações nos repositórios de cada um dos projetos. 
 
 A partir de cluster Kubernetes com 1 master e 3 workers em execução. No node master, executar:
 
@@ -47,3 +49,16 @@ cd ../carteira-crypto-api
 kubectl create -f manifest.yaml
 ```
 
+## 📱 Vídeo demonstrativo da solução
+
+** Em breve ** 
+
+## 👨🏽‍💻 Desenvolvedores
+
+| [<img src="https://avatars.githubusercontent.com/AlexDamiao86" width=115><br><sub>Alexandre Damião Mendonça Maia</sub>](https://github.com/AlexDamiao86) |  [<img src="https://avatars.githubusercontent.com/FabioQuimico" width=115><br><sub>Fabio Ferreira dos Santos</sub>](https://github.com/FabioQuimico) |  [<img src="https://avatars.githubusercontent.com/Gabriel2503" width=115><br><sub>Gabriel Oliveira Barbosa</sub>](https://github.com/Gabriel2503) | [<img src="https://avatars.githubusercontent.com/ferreirabraga" width=115><br><sub>Rafael Braga da Silva Ferreira</sub>](https://github.com/ferreirabraga) | 
+| :---: | :---: | :---: | :---: |
+
+>
+>Projeto realizado como requisito para conclusão da disciplina Containers e Virtualization do MBA Full Stack Development - FIAP 2022
+>
+>[Prof. André Pontes Sampaio](https://github.com/tonanuvem)
