@@ -11,4 +11,4 @@ data:
   POSTGRES_DOCKER_PORT: "5432"
   PGADMIN_DEFAULT_EMAIL: "pgadmin@email.com"
   PGADMIN_DEFAULT_PASSWORD: "senha"
-  COTACAO_API_URL: "http://cotacao-crypto-svc-int:5556/"
+  COTACAO_API_URL: "http://cotacao-crypto-svc-int:5555/"

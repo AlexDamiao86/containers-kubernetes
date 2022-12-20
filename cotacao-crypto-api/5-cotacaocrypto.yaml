@@ -105,5 +105,5 @@ spec:
   clusterIP: None
   ports:
   - name: cotacao-crypto-svc-int
-    port: 5556
+    port: 5555
     targetPort: 5555 
