@@ -16,7 +16,7 @@ Executar em cluster Kubernetes microserviços e frontend em alta disponibilidade
 
 3. [Crypto-app](https://github.com/gabriel2503/Microservices) - Frontend desenvolvido em Angular que consume os dois microserviços anteriores para exibir lista de criptomoedas disponíveis para compra e venda. Registra compra, venda e lista criptomoedas de um cliente. 
 
-> **_NOTA:_** Imagem DockerHub: gabrielobarbosa/crypto:v2
+> **_NOTA:_** Imagem DockerHub: gabrielobarbosa/crypto:v3
 
 ## 📐 Topologia
 
@@ -51,7 +51,11 @@ kubectl create -f manifest.yaml
 
 ## 📱 Vídeo demonstrativo da solução
 
-** Em breve ** 
+<a href="https://www.loom.com/share/7fbfdd37c34244f6adb17b3e38e69de3">
+    <p>Assista aqui</p>
+    <img style="max-width:500px;" src="https://cdn.loom.com/sessions/thumbnails/7fbfdd37c34244f6adb17b3e38e69de3-with-play.gif">
+  </a>
+
 
 ## 👨🏽‍💻 Desenvolvedores
 
