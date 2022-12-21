@@ -49,6 +49,15 @@ cd ../carteira-crypto-api
 kubectl create -f manifest.yaml
 ```
 
+3. Componentes da Crypto app: 
+
+```bash
+cd ../frontend-crypto-app
+```
+```bash
+kubectl create -f manifest.yaml
+```
+
 ## 📱 Vídeo demonstrativo da solução
 
 <a href="https://www.loom.com/share/7fbfdd37c34244f6adb17b3e38e69de3">
