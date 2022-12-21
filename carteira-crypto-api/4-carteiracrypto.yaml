@@ -25,11 +25,11 @@ spec:
         image:  alexdamiao86/carteira-crypto-api:1.0.6
         resources:
           requests:
-            cpu: 300m
-            memory: 300Mi
+            cpu: 100m
+            memory: 200Mi
           limits:
-            cpu: 750m
-            memory: 750Mi
+            cpu: 500m
+            memory: 800Mi
         livenessProbe:
           httpGet:
             path: /q/health/live

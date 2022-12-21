@@ -6,7 +6,7 @@ metadata:
   labels:
     app: frontend-crypto
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: frontend-crypto
@@ -43,5 +43,31 @@ spec:
     port: 80
     targetPort: 80
     nodePort: 32000
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-frontend-crypto
+  namespace: crypto-app
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: frontend-crypto
+  minReplicas: 3
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 50
 
 

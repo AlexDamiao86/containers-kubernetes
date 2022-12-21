@@ -140,10 +140,10 @@ spec:
         resources:
           requests:
             cpu: 100m
-            memory: 100Mi
+            memory: 200Mi
           limits:
             cpu: 300m
-            memory: 300Mi
+            memory: 400Mi
         livenessProbe:
           httpGet:
             path: /health
@@ -221,3 +221,29 @@ spec:
   - name: cotacao-crypto-svc-int
     port: 5555
     targetPort: 5555 
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-cotacao-crypto
+  namespace: crypto-app
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cotacao-crypto-api
+  minReplicas: 3
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 40
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 40

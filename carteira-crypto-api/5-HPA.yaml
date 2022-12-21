@@ -1,13 +1,13 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: hpa-cotacao-crypto
+  name: hpa-carteira-crypto
   namespace: crypto-app
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: cotacao-crypto-api
+    name: carteira-crypto-api
   minReplicas: 3
   maxReplicas: 5
   metrics:
@@ -23,6 +23,3 @@ spec:
       target:
         type: Utilization
         averageUtilization: 40
-
-
-
