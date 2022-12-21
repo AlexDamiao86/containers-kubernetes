@@ -20,7 +20,7 @@ Executar em cluster Kubernetes microserviços e frontend em alta disponibilidade
 
 ## 📐 Topologia
 
-![Topologia](images/topologiav1.png)
+![Topologia](images/topologiav2.png)
 
 ## ⚙️ Configuração declarativa (Como executar)
 
